@@ -47,13 +47,13 @@ edit_aptconf() {
   file_backup "$APT_CONF" "mv"
 
   if [ ${#USERNAME} = 0 ] ; then
-        echo "Acquire::ftp::proxy \"http://${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee $APT_CONF 1>/dev/null
+        echo "Acquire::ftp::proxy \"ftp://${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee $APT_CONF 1>/dev/null
         echo "Acquire::http::proxy \"http://${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
-        echo "Acquire::https::proxy \"http://${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
+        echo "Acquire::https::proxy \"https://${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
   else
-        echo "Acquire::ftp::proxy \"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee $APT_CONF 1>/dev/null
+        echo "Acquire::ftp::proxy \"ftp://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee $APT_CONF 1>/dev/null
         echo "Acquire::http::proxy \"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
-        echo "Acquire::https::proxy \"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
+        echo "Acquire::https::proxy \"https://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\";" | sudo tee -a $APT_CONF 1>/dev/null
   fi
 
   sudo chmod 644 $APT_CONF
@@ -68,15 +68,15 @@ edit_wgetrc() {
   if [ ${#USERNAME} = 0 ] ; then
         echo "use_proxy = on" > $WGETRC
         echo "http_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
-        echo "https_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
-        echo "ftp_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
+        echo "https_proxy = https://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
+        echo "ftp_proxy = ftp://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
   else
         echo "use_proxy = on" > $WGETRC
         echo "proxy_user = ${USERNAME}" >> $WGETRC
         echo "proxy_passwd = ${PASSWORD}" >> $WGETRC
         echo "http_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
-        echo "https_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
-        echo "ftp_proxy = http://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
+        echo "https_proxy = https://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
+        echo "ftp_proxy = ftp://${PROXY_SERVER}:${PROXY_PORT}" >> $WGETRC
   fi
 
   chmod 644 $WGETRC
@@ -96,13 +96,13 @@ edit_bashrc() {
   sed -i "/dw\=/d" $BASHRC
 
   if [ ${#USERNAME} = 0 ] ; then
-        echo "export ftp_proxy=\"http://${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
+        echo "export ftp_proxy=\"ftp://${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
         echo "export http_proxy=\"http://${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
-        echo "export https_proxy=\"http://${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
+        echo "export https_proxy=\"https://${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
   else
-        echo "export ftp_proxy=\"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
+        echo "export ftp_proxy=\"ftp://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
         echo "export http_proxy=\"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
-        echo "export https_proxy=\"http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
+        echo "export https_proxy=\"https://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/\"" >> $BASHRC
   fi
   echo -e "alias grepf=\"find -type f ! -path './.svn/*' ! -path './.git/*' ! -path './.repo/*' | xargs grep -n --color\"" >> $BASHRC
   echo "alias dw='curl_dw'" >> $BASHRC
@@ -132,10 +132,10 @@ edit_gitwrap() {
   #echo "$GITWRAP edited."
   echo ${USERNAME}
   if [ ! ${#USERNAME} = 0 ] ; then
-        git config --global https.proxy "http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/"
+        git config --global https.proxy "https://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/"
         git config --global http.proxy "http://${USERNAME}:${PASSWORD}@${PROXY_SERVER}:${PROXY_PORT}/"
   else
-        git config --global https.proxy "http://${PROXY_SERVER}:${PROXY_PORT}/"
+        git config --global https.proxy "https://${PROXY_SERVER}:${PROXY_PORT}/"
         git config --global http.proxy "http://${PROXY_SERVER}:${PROXY_PORT}/"
   fi
 }
