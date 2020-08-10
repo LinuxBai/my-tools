@@ -17,7 +17,9 @@ set tabstop=4
 set bg=light
 set softtabstop=4
 set shiftwidth=4
-set noexpandtab
+set expandtab
+set list
+set listchars=tab:>-,trail:-
 
 set autochdir
 set tags=tags;
